@@ -1,7 +1,7 @@
 /* Global Styling */
 .gg {
   margin: 0;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   color: #4a4a4a; /* Neutral text color */
   display: flex;
   justify-content: center;
@@ -14,7 +14,6 @@
   z-index: 1; /* Ensure content stays above the video */
 }
 
-
 .background-video {
   position: absolute; /* Absolute positioning for full coverage */
   top: 0;
@@ -25,7 +24,6 @@
   z-index: -1; /* Places the video behind the content */
 }
 
- 
 /* Review History Container */
 .review-history-container {
   width: 90vw; /* Adaptive width */
@@ -38,7 +36,7 @@
   flex-direction: column; /* Arrange content vertically */
   gap: 20px; /* Space between sections */
   box-sizing: border-box; /* Include padding in width/height */
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 /* Scrollbar Customization */
@@ -75,45 +73,43 @@
   }
 }
 
-  
-  /* Header */
-  .review-header {
-    margin-bottom: 20px;
-  }
-  
-  .review-header h1 {
-    font-size: clamp(3rem, 7vw, 7rem); /* Scales with screen width */
-    color: #8f7ceb;
-    margin-bottom: 1rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+/* Header */
+.review-header {
+  margin-bottom: 20px;
 }
-  
-  .step-indicatorss {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-  }
-  
-  .step {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #d4d4d4;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .step.completed {
-    background: #6a63ff;
-  }
-  
-  .step.active {
-    background: #8e82ff;
-    box-shadow: 0 0 10px rgba(106, 99, 255, 0.8);
-  }
+
+.review-header h1 {
+  font-size: clamp(3rem, 7vw, 7rem); /* Scales with screen width */
+  color: #8f7ceb;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.step-indicatorss {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.step {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #d4d4d4;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.step.completed {
+  background: #6a63ff;
+}
+
+.step.active {
+  background: #8e82ff;
+  box-shadow: 0 0 10px rgba(106, 99, 255, 0.8);
+}
 /* Review History */
 .review-history-content {
   margin-top: 20px;
-  
 }
 
 /* Review History Title Styling */
@@ -126,12 +122,12 @@
   border-radius: 12px; /* Rounded corners */
   padding: 10px 20px;
   display: inline-block;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
   text-align: center;
 }
 .h2 {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 /* Table Styling */
@@ -139,7 +135,7 @@
   width: 100%;
   border-collapse: collapse;
   margin: 20px 0;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   border-radius: 12px; /* Rounded corners for the entire table */
   overflow: hidden; /* Ensures rounded corners apply to the table content */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow for the table */
@@ -150,7 +146,7 @@
   text-align: center;
   padding: 12px 15px; /* Slightly larger padding for better spacing */
   border: 1px solid #e0e0e0;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .review-table th {
@@ -159,7 +155,7 @@
   font-weight: 700;
   text-transform: uppercase; /* Optional: for a more formal look */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for the header */
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .review-table td {
@@ -191,142 +187,162 @@
   }
 }
 
+/* Features Badge */
+.feature-badge {
+  display: inline-block;
+  margin: 2px;
+  padding: 5px 10px;
+  font-size: 0.9rem;
+  color: #ffffff;
+  background: linear-gradient(135deg, #6a63ff, #8e82ff);
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(106, 99, 255, 0.4);
+}
 
-
-  /* Features Badge */
-  .feature-badge {
-    display: inline-block;
-    margin: 2px;
-    padding: 5px 10px;
-    font-size: 0.9rem;
-    color: #ffffff;
-    background: linear-gradient(135deg, #6a63ff, #8e82ff);
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(106, 99, 255, 0.4);
-  }
-  
 /* Button Container */
 .button-container {
-    margin-top: 20px;
-  }
-  
-  /* Back Button Styling */
-  .secondary-btn.back-btn {
-    background: linear-gradient(135deg, #6a63ff, #8e82ff); /* Match primary button gradient */
-    color: #ffffff; /* White text */
-    border: none; /* No border */
-    padding: 12px 25px;
-    border-radius: 25px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 6px 12px rgba(106, 99, 255, 0.3); /* Slight purple shadow */
-  }
-  
-  .secondary-btn.back-btn:hover {
-    background: linear-gradient(135deg, #5843d8, #7c74e8); /* Match primary button hover gradient */
-    transform: scale(1.1); /* Slight scale effect */
-    box-shadow: 0 6px 15px rgba(106, 99, 255, 0.5); /* Enhanced shadow */
-  }
-  
-  
-  /* Edit and Delete Buttons */
-  .ii,
-  .oo {
-    padding: 15px;
-    width: 120px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    font-size: 0.9rem; /* Slightly increased font size for readability */
-    font-weight: bold;
-    text-transform: uppercase;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(106, 99, 255, 0.3);
-  }
-  
-  /* Edit Button */
-  .ii {
-    background: linear-gradient(135deg, #6a63ff, #8e82ff); /* Match primary button gradient */
-    color: white;
-  }
-  
-  .ii:hover {
-    background: linear-gradient(135deg, #5843d8, #7c74e8); /* Match primary button hover gradient */
-    box-shadow: 0 6px 10px rgba(106, 99, 255, 0.4); /* Enhanced shadow */
-    transform: translateY(-2px); /* Lift effect */
-  }
-  
-  .ii:active {
-    background: #5843d8; /* Solid purple for pressed state */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Compressed shadow */
-    transform: translateY(1px); /* Lower on press */
-  }
-  
-  /* Delete Button */
-  .oo {
-    background: linear-gradient(135deg, #6a63ff, #8e82ff); /* Match primary button gradient */
-    color: white;
-  }
-  
-  .oo:hover {
-    background: linear-gradient(135deg, #5843d8, #7c74e8); /* Match primary button hover gradient */
-    box-shadow: 0 6px 10px rgba(106, 99, 255, 0.4); /* Enhanced shadow */
-    transform: translateY(-2px); /* Lift effect */
-  }
-  
-  .oo:active {
-    background: #5843d8; /* Solid purple for pressed state */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Compressed shadow */
-    transform: translateY(1px); /* Lower on press */
-  }
-  /* Modal Container */
+  margin-top: 20px;
+}
+
+/* Back Button Styling */
+.secondary-btn.back-btn {
+  background: linear-gradient(
+    135deg,
+    #6a63ff,
+    #8e82ff
+  ); /* Match primary button gradient */
+  color: #ffffff; /* White text */
+  border: none; /* No border */
+  padding: 12px 25px;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 12px rgba(106, 99, 255, 0.3); /* Slight purple shadow */
+}
+
+.secondary-btn.back-btn:hover {
+  background: linear-gradient(
+    135deg,
+    #5843d8,
+    #7c74e8
+  ); /* Match primary button hover gradient */
+  transform: scale(1.1); /* Slight scale effect */
+  box-shadow: 0 6px 15px rgba(106, 99, 255, 0.5); /* Enhanced shadow */
+}
+
+/* Edit and Delete Buttons */
+.ii,
+.oo {
+  padding: 15px;
+  width: 120px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.9rem; /* Slightly increased font size for readability */
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(106, 99, 255, 0.3);
+}
+
+/* Edit Button */
+.ii {
+  background: linear-gradient(
+    135deg,
+    #6a63ff,
+    #8e82ff
+  ); /* Match primary button gradient */
+  color: white;
+}
+
+.ii:hover {
+  background: linear-gradient(
+    135deg,
+    #5843d8,
+    #7c74e8
+  ); /* Match primary button hover gradient */
+  box-shadow: 0 6px 10px rgba(106, 99, 255, 0.4); /* Enhanced shadow */
+  transform: translateY(-2px); /* Lift effect */
+}
+
+.ii:active {
+  background: #5843d8; /* Solid purple for pressed state */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Compressed shadow */
+  transform: translateY(1px); /* Lower on press */
+}
+
+/* Delete Button */
+.oo {
+  background: linear-gradient(
+    135deg,
+    #6a63ff,
+    #8e82ff
+  ); /* Match primary button gradient */
+  color: white;
+}
+
+.oo:hover {
+  background: linear-gradient(
+    135deg,
+    #5843d8,
+    #7c74e8
+  ); /* Match primary button hover gradient */
+  box-shadow: 0 6px 10px rgba(106, 99, 255, 0.4); /* Enhanced shadow */
+  transform: translateY(-2px); /* Lift effect */
+}
+
+.oo:active {
+  background: #5843d8; /* Solid purple for pressed state */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Compressed shadow */
+  transform: translateY(1px); /* Lower on press */
+}
+/* Modal Container */
 .edit-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000; /* Ensure modal is above other elements */
-  }
-  
-  /* Modal Content Box */
-  .edit-modal-content {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    width: 400px;
-    max-width: 90%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    text-align: center;
-  }
-  
-  /* Modal Header */
-  .edit-modal-content h2 {
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  /* Input Fields */
-  .edit-modal-content input[type="text"],
-  .edit-modal-content input[type="number"] {
-    width: calc(100% - 20px);
-    padding: 8px 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-  }
-  
-  /* Modal Actions */
-  .modal-actions {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-  }
-  
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure modal is above other elements */
+}
+
+/* Modal Content Box */
+.edit-modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+/* Modal Header */
+.edit-modal-content h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Input Fields */
+.edit-modal-content input[type="text"],
+.edit-modal-content input[type="number"] {
+  width: calc(100% - 20px);
+  padding: 8px 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Modal Actions */
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}

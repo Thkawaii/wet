@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
 import "./payment.css";
-import { Outlet, useNavigate } from "react-router-dom";
-import TrueMoneyQR from '../../assets/2.png';
-import PromptPayQR from '../../assets/3.png';
-import AlipayQR from '../../assets/4.png';
-import LinePayQR from '../../assets/5.png';
-import VisaIcon from '../../assets/visa.png';
-import MasterCardIcon from '../../assets/mastercard.png';
-import AmexIcon from '../../assets/amex.png';
-import JCBIcon from '../../assets/jcb.png';
-import DiscoverIcon from '../../assets/discover.png';
-import DinersIcon from '../../assets/diners.png';
-import UnionPayIcon from '../../assets/unionpay.png';
-import OtherCardIcon from '../../assets/OtherCard.png';
-import { CreatePayments } from "../../services/https/PaymentAPI";
-import { Paymentx } from "../../interfaces/IPayment";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import TrueMoneyQR from "../../assets/2.png";
+import PromptPayQR from "../../assets/3.png";
+import AlipayQR from "../../assets/4.png";
+import LinePayQR from "../../assets/5.png";
+import VisaIcon from "../../assets/visa.png";
+import MasterCardIcon from "../../assets/mastercard.png";
+import AmexIcon from "../../assets/amex.png";
+import JCBIcon from "../../assets/jcb.png";
+import DiscoverIcon from "../../assets/discover.png";
+import DinersIcon from "../../assets/diners.png";
+import UnionPayIcon from "../../assets/unionpay.png";
+import OtherCardIcon from "../../assets/OtherCard.png";
+import { apiRequest } from "../../config/ApiService";
+import { Endpoint } from "../../config/Endpoint";
 
 const Payment: React.FC = () => {
   const [method, setMethod] = useState<string | null>(null);
@@ -26,16 +26,14 @@ const Payment: React.FC = () => {
     cvv: "",
   });
   const [cardType, setCardType] = useState<string | null>(null);
-  const qrCodeImages: { [key: string]: string } = {
-    truemoney: TrueMoneyQR,
-    promptpay: PromptPayQR,
-    alipay: AlipayQR,
-    linepay: LinePayQR,
-  };
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [wallet, setWallet] = useState<string | null>(null);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const { paymenyAmount, promotionId, bookingId, driverId, passengerId } =
+    location.state || {};
 
   useEffect(() => {
     setWallet(null);
@@ -50,13 +48,18 @@ const Payment: React.FC = () => {
     setError("");
   }, [method]);
 
-  const handleCardInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleCardInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
 
     if (name === "cardNumber") {
       const numericValue = value.replace(/\D/g, "");
       const formattedValue =
-        numericValue.match(/.{1,4}/g)?.join("-").substr(0, 19) || "";
+        numericValue
+          .match(/.{1,4}/g)
+          ?.join("-")
+          .substr(0, 19) || "";
       setCardDetails((prev) => ({ ...prev, [name]: formattedValue }));
       detectCardType(numericValue);
     } else {
@@ -82,9 +85,30 @@ const Payment: React.FC = () => {
     } else {
       setCardType("OtherCard");
     }
-    localStorage.setItem("card_type", cardType);
-    
   };
+
+  // const menuItems = [
+  //   {
+  //     name: "Home",
+  //     icon: "https://cdn-icons-png.flaticon.com/128/18390/18390765.png",
+  //     route: "/paid",
+  //   },
+  //   {
+  //     name: "Payment",
+  //     icon: "https://cdn-icons-png.flaticon.com/128/18209/18209461.png",
+  //     route: "/payment",
+  //   },
+  //   {
+  //     name: "Review",
+  //     icon: "https://cdn-icons-png.flaticon.com/128/7656/7656139.png",
+  //     route: "/review",
+  //   },
+  //   {
+  //     name: "History",
+  //     icon: "https://cdn-icons-png.flaticon.com/128/9485/9485945.png",
+  //     route: "/review/history",
+  //   },
+  // ];
 
   const validateForm = () => {
     const validationErrors: { [key: string]: string } = {};
@@ -92,11 +116,13 @@ const Payment: React.FC = () => {
     const cardNumberRegex = /^\d{4}-\d{4}-\d{4}-\d{4}$/;
 
     if (!cardNumberRegex.test(cardDetails.cardNumber)) {
-      validationErrors.cardNumber = "Card Number must be in XXXX-XXXX-XXXX-XXXX format.";
-      }
+      validationErrors.cardNumber =
+        "Card Number must be in XXXX-XXXX-XXXX-XXXX format.";
+    }
 
     if (!cardDetails.cardholderName.trim().includes(" ")) {
-      validationErrors.cardholderName = "Please enter a valid first and last name.";
+      validationErrors.cardholderName =
+        "Please enter a valid first and last name.";
     }
 
     if (!cardDetails.expiryMonth) {
@@ -116,95 +142,89 @@ const Payment: React.FC = () => {
     return Object.keys(validationErrors).length === 0;
   };
 
-  const getCurrentDateYmd = () => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-    const day = String(now.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  };
-  const getCurrentDateNow = () => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-    const day = String(now.getDate()).padStart(2, '0');
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const seconds = String(now.getSeconds()).padStart(2, '0');
-    
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  };
-
-  
-
   const handleConfirm = async () => {
     try {
+      if (!bookingId || !passengerId || !driverId) {
+        alert("Please check the information on the home page first.");
+        return;
+      }
+
+      if (!paymenyAmount || !bookingId) {
+        setError("Invalid payment data. Please try again.");
+        return;
+      }
+
       if (!method) {
         setError("Please Select Payment Method.");
         return;
       }
-  
+
+      let card: string = "";
+
       if (method === "wallet") {
         if (!wallet) {
           setError("Please Select Wallet Payment.");
           return;
         } else {
-          setError(""); // Clear the error if a wallet is selected
+          setError("");
         }
-  
-        console.log(`Payment confirmed using ${wallet}`);
-        localStorage.setItem("card_type", wallet); // Save selected wallet
       } else if (method === "card") {
         if (!validateForm()) {
-          return; // Validate card form and exit if invalid
+          return;
+        } else {
+          card = `?card_type=${cardType}`;
         }
-  
-        console.log("Payment confirmed using debit/credit card.");
       }
-  
-      // Build the payment data object
-      const data = {
-        amount: parseFloat(localStorage.getItem("total_discount")) || 0,
-        istype: method,
-        method: localStorage.getItem("card_type") || "",
-        date: getCurrentDateNow(),
-        booking_id: parseInt(localStorage.getItem("book_id"), 10) || null,
-        promotion_id: parseInt(localStorage.getItem("is_state"), 10) || null,
+
+      const paymentData = {
+        payment_amount: paymenyAmount,
+        payment_method: method === "wallet" ? wallet : cardType,
+        booking_id: bookingId,
+        promotion_id: promotionId === undefined ? null : promotionId,
       };
-  
-      // POST request to the server
-      const response = await fetch("http://127.0.0.1:8001/add/payment", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-  
-      if (!response.ok) {
-        const errorData = await response.json();
-        setError(`Payment failed: ${errorData.message}`);
-        return;
+
+      const response = await apiRequest(
+        "POST",
+        Endpoint.PAYMENT + card,
+        paymentData
+      );
+
+      if (promotionId != undefined || promotionId != null) {
+        await apiRequest(
+          "PUT",
+          `${Endpoint.PROMOTION_USECOUNT}?promotion_id=${promotionId}`
+        );
       }
-  
-      // Success handling
-      console.log("Payment successfully submitted:", data);
-      alert("Payment successfully!"); // Success alert
-      navigate("/review"); // Navigate after successful payment
-    } catch (error) {
-      setError(`An error occurred: ${error.message}`);
+
+      if (response) {
+        alert("Payment successfully!");
+        navigate("/review", {
+          state: {
+            bookingId: bookingId,
+            driverId: driverId,
+            passengerId: passengerId,
+          },
+        });
+      } else {
+        setError("Payment failed. Please try again.");
+      }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(`An error occurred: ${error.message}`);
+      } else {
+        setError("An unknown error occurred.");
+      }
+      console.error("Error during payment:", error);
     }
   };
-  const menuItems = [
-    { name: "Home", icon: "https://cdn-icons-png.flaticon.com/128/18390/18390765.png", route: "/paid" },
-    { name: "Payment", icon: "https://cdn-icons-png.flaticon.com/128/18209/18209461.png", route: "/payment" },
-    { name: "Review", icon: "https://cdn-icons-png.flaticon.com/128/7656/7656139.png", route: "/review" },
-    { name: "History", icon: "https://cdn-icons-png.flaticon.com/128/9485/9485945.png", route: "/review/history" },
-  ];
 
-  const handleMenuClick = (item: { name: string; icon: string; route: string }) => {
-    navigate(item.route); // Navigate directly to the route
-  };
+  // const handleMenuClick = (item: {
+  //   name: string;
+  //   icon: string;
+  //   route: string;
+  // }) => {
+  //   navigate(item.route);
+  // };
 
   const cardTypeIcons = {
     Visa: VisaIcon,
@@ -220,15 +240,15 @@ const Payment: React.FC = () => {
   return (
     <div className="nn">
       <div className="payment-container1">
-      <video autoPlay muted loop className="bm">
-        <source 
-          src="https://media.istockphoto.com/id/1293937827/th/%E0%B8%A7%E0%B8%B4%E0%B8%94%E0%B8%B5%E0%B9%82%E0%B8%AD/%E0%B8%82%E0%B8%B1%E0%B8%9A%E0%B8%A3%E0%B8%96%E0%B8%AD%E0%B8%B8%E0%B9%82%E0%B8%A1%E0%B8%87%E0%B8%84%E0%B9%8C%E0%B8%AE%E0%B8%AD%E0%B8%A5%E0%B9%81%E0%B8%A5%E0%B8%99%E0%B8%94%E0%B9%8C%E0%B8%88%E0%B8%B2%E0%B8%81%E0%B9%81%E0%B8%A1%E0%B8%99%E0%B8%AE%E0%B8%B1%E0%B8%95%E0%B8%95%E0%B8%B1%E0%B8%99%E0%B9%84%E0%B8%9B%E0%B9%80%E0%B8%88%E0%B8%AD%E0%B8%A3%E0%B9%8C%E0%B8%8B%E0%B8%B5%E0%B8%A2%E0%B9%8C%E0%B8%8B%E0%B8%B4%E0%B8%95%E0%B8%B5%E0%B9%89%E0%B9%82%E0%B8%94%E0%B8%A2%E0%B9%84%E0%B8%A1%E0%B9%88%E0%B8%A1%E0%B8%B5%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%88%E0%B8%A3%E0%B8%B2%E0%B8%88%E0%B8%A3-%E0%B8%A1%E0%B8%B8%E0%B8%A1%E0%B8%A1%E0%B8%AD%E0%B8%87%E0%B8%82%E0%B8%AD%E0%B8%87%E0%B8%9C%E0%B8%B9%E0%B9%89%E0%B8%82%E0%B8%B1%E0%B8%9A%E0%B8%82%E0%B8%B5%E0%B9%88.mp4?s=mp4-640x640-is&k=20&c=kdB31F7tkd1SQl0AybWQSweLq8tbCKL9xOO6cuK0EZA=" 
-          type="video/mp4" 
-        />
-        Your browser does not support the video tag.
-      </video>
+        <video autoPlay muted loop className="bm">
+          <source
+            src="https://media.istockphoto.com/id/1293937827/th/%E0%B8%A7%E0%B8%B4%E0%B8%94%E0%B8%B5%E0%B9%82%E0%B8%AD/%E0%B8%82%E0%B8%B1%E0%B8%9A%E0%B8%A3%E0%B8%96%E0%B8%AD%E0%B8%B8%E0%B9%82%E0%B8%A1%E0%B8%87%E0%B8%84%E0%B9%8C%E0%B8%AE%E0%B8%AD%E0%B8%A5%E0%B9%81%E0%B8%A5%E0%B8%99%E0%B8%94%E0%B9%8C%E0%B8%88%E0%B8%B2%E0%B8%81%E0%B9%81%E0%B8%A1%E0%B8%99%E0%B8%AE%E0%B8%B1%E0%B8%95%E0%B8%95%E0%B8%B1%E0%B8%99%E0%B9%84%E0%B8%9B%E0%B9%80%E0%B8%88%E0%B8%AD%E0%B8%A3%E0%B9%8C%E0%B8%8B%E0%B8%B5%E0%B8%A2%E0%B9%8C%E0%B8%8B%E0%B8%B4%E0%B8%95%E0%B8%B5%E0%B9%89%E0%B9%82%E0%B8%94%E0%B8%A2%E0%B9%84%E0%B8%A1%E0%B9%88%E0%B8%A1%E0%B8%B5%E0%B8%81%E0%B8%B2%E0%B8%A3%E0%B8%88%E0%B8%A3%E0%B8%B2%E0%B8%88%E0%B8%A3-%E0%B8%A1%E0%B8%B8%E0%B8%A1%E0%B8%A1%E0%B8%AD%E0%B8%87%E0%B8%82%E0%B8%AD%E0%B8%87%E0%B8%9C%E0%B8%B9%E0%B9%89%E0%B8%82%E0%B8%B1%E0%B8%9A%E0%B8%82%E0%B8%B5%E0%B9%88.mp4?s=mp4-640x640-is&k=20&c=kdB31F7tkd1SQl0AybWQSweLq8tbCKL9xOO6cuK0EZA="
+            type="video/mp4"
+          />
+          Your browser does not support the video tag.
+        </video>
         <header className="payment-header">
-          <div className="sidebar">
+          {/* <div className="sidebar">
             {menuItems.map((item) => (
               <div
                 key={item.name}
@@ -239,7 +259,7 @@ const Payment: React.FC = () => {
                 <p className="menu-text">{item.name}</p>
               </div>
             ))}
-          </div>
+          </div> */}
           <h1>PAYMENT</h1>
           <div className="step-indicators">
             <div className="step completed"></div>
@@ -272,7 +292,9 @@ const Payment: React.FC = () => {
             </div>
           </div>
           <div
-            className={`payment-option ${method === "wallet" ? "selected" : ""}`}
+            className={`payment-option ${
+              method === "wallet" ? "selected" : ""
+            }`}
             onClick={() => setMethod("wallet")}
           >
             <p>Digital Wallet</p>
@@ -346,41 +368,25 @@ const Payment: React.FC = () => {
         {wallet === "truemoney" && (
           <div className="qr-code-section">
             <h2>Scan the QR Code</h2>
-            <img
-              className="qr-code-img"
-              src={TrueMoneyQR}
-              alt="TrueMoneyQR"
-            />
+            <img className="qr-code-img" src={TrueMoneyQR} alt="TrueMoneyQR" />
           </div>
         )}
         {wallet === "promptpay" && (
           <div className="qr-code-section">
             <h2>Scan the QR Code</h2>
-            <img
-              className="qr-code-img"
-              src={PromptPayQR}
-              alt="PromptPayQR"
-            />
+            <img className="qr-code-img" src={PromptPayQR} alt="PromptPayQR" />
           </div>
         )}
         {wallet === "alipay" && (
           <div className="qr-code-section">
             <h2>Scan the QR Code</h2>
-            <img
-              className="qr-code-img"
-              src={AlipayQR}
-              alt="AlipayQR"
-            />
+            <img className="qr-code-img" src={AlipayQR} alt="AlipayQR" />
           </div>
         )}
         {wallet === "linepay" && (
           <div className="qr-code-section">
             <h2>Scan the QR Code</h2>
-            <img
-              className="qr-code-img"
-              src={LinePayQR}
-              alt="LinePayQR"
-            />
+            <img className="qr-code-img" src={LinePayQR} alt="LinePayQR" />
           </div>
         )}
 
@@ -388,7 +394,14 @@ const Payment: React.FC = () => {
           <div className="card-details-form">
             <div className="form-group">
               <label htmlFor="cardNumber">Card Number</label>
-              <div className="card-number-input" style={{ display: "flex", alignItems: "center", position: "relative" }}>
+              <div
+                className="card-number-input"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  position: "relative",
+                }}
+              >
                 <input
                   type="text"
                   id="cardNumber"
@@ -396,19 +409,19 @@ const Payment: React.FC = () => {
                   placeholder="1234-5678-9012-3456"
                   value={cardDetails.cardNumber}
                   onChange={handleCardInputChange}
-                  style={{ flex: 1 }}
+                  style={{ flex: 1, color: "#909090" }}
                 />
-                {cardType && (
+                {cardType && cardType in cardTypeIcons && (
                   <img
-                    src={cardTypeIcons[cardType]}
+                    src={cardTypeIcons[cardType as keyof typeof cardTypeIcons]}
                     alt={cardType}
                     className="card-type-icon"
-                    
                   />
                 )}
               </div>
-              {errors.cardNumber && <div className="error-message">{errors.cardNumber}</div>}
-                
+              {errors.cardNumber && (
+                <div className="error-message">{errors.cardNumber}</div>
+              )}
             </div>
             <div className="form-group">
               <label htmlFor="cardholderName">Cardholder Name</label>
@@ -418,11 +431,17 @@ const Payment: React.FC = () => {
                 name="cardholderName"
                 placeholder="John Doe"
                 value={cardDetails.cardholderName}
+                style={{ color: "#909090" }}
                 onChange={(e) =>
-                  setCardDetails((prev) => ({ ...prev, cardholderName: e.target.value }))
+                  setCardDetails((prev) => ({
+                    ...prev,
+                    cardholderName: e.target.value,
+                  }))
                 }
               />
-              {errors.cardholderName && <div className="error-message">{errors.cardholderName}</div>}
+              {errors.cardholderName && (
+                <div className="error-message">{errors.cardholderName}</div>
+              )}
             </div>
             <div className="form-group">
               <label htmlFor="expiryMonth">Expiry Month</label>
@@ -431,6 +450,7 @@ const Payment: React.FC = () => {
                 name="expiryMonth"
                 value={cardDetails.expiryMonth}
                 onChange={handleCardInputChange}
+                style={{ color: "#909090" }}
               >
                 <option value="">Month</option>
                 {[...Array(12).keys()].map((m) => (
@@ -439,7 +459,9 @@ const Payment: React.FC = () => {
                   </option>
                 ))}
               </select>
-              {errors.expiryMonth && <div className="error-message">{errors.expiryMonth}</div>}
+              {errors.expiryMonth && (
+                <div className="error-message">{errors.expiryMonth}</div>
+              )}
             </div>
             <div className="form-group">
               <label htmlFor="expiryYear">Expiry Year</label>
@@ -448,15 +470,21 @@ const Payment: React.FC = () => {
                 name="expiryYear"
                 value={cardDetails.expiryYear}
                 onChange={handleCardInputChange}
+                style={{ color: "#909090" }}
               >
                 <option value="">Year</option>
-                {Array.from({ length: 30 }, (_, i) => new Date().getFullYear() + i).map((year) => (
+                {Array.from(
+                  { length: 30 },
+                  (_, i) => new Date().getFullYear() + i
+                ).map((year) => (
                   <option key={year} value={year}>
                     {year}
                   </option>
                 ))}
               </select>
-              {errors.expiryYear && <div className="error-message">{errors.expiryYear}</div>}
+              {errors.expiryYear && (
+                <div className="error-message">{errors.expiryYear}</div>
+              )}
             </div>
             <div className="form-group">
               <label htmlFor="cvv">CVV</label>
@@ -467,6 +495,7 @@ const Payment: React.FC = () => {
                 placeholder="123"
                 value={cardDetails.cvv}
                 onChange={handleCardInputChange}
+                style={{ color: "#909090" }}
               />
               {errors.cvv && <div className="error-message">{errors.cvv}</div>}
             </div>
@@ -487,7 +516,3 @@ const Payment: React.FC = () => {
   );
 };
 export default Payment;
-function isValidCardNumber(cardNumber: string) {
-  throw new Error("Function not implemented.");
-}
-

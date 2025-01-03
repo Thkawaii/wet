@@ -9,7 +9,7 @@
   position: relative; /* For stacking child elements */
   overflow: hidden; /* Prevent video overflow */
   box-sizing: border-box; /* Include padding in dimensions */
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 /* Gradient Overlay */
@@ -63,8 +63,7 @@
   z-index: 2; /* Ensure content is above gradient and video */
 }
 
-
-.xox{
+.xox {
   position: absolute; /* Absolute positioning for full coverage */
   top: 0;
   left: 0;
@@ -78,13 +77,12 @@
 .edit-card:hover {
   transform: translateY(-10px); /* Slight upward lift */
   border-color: transparent; /* Maintain border gradient */
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3),
-              0 0 20px rgba(107, 88, 217, 0.7); /* Glow and deeper shadow */
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(107, 88, 217, 0.7); /* Glow and deeper shadow */
 }
 
 /* Gradient Border with Pseudo-Element */
 .edit-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -2px;
   left: -2px;
@@ -109,8 +107,6 @@
   }
 }
 
-
-
 /* Title */
 .edit-title {
   font-size: 50px;
@@ -120,7 +116,7 @@
   text-transform: uppercase;
   letter-spacing: 2px;
   position: relative;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .edit-title::after {
@@ -211,13 +207,21 @@
   font-weight: bold; /* Added bold for better visibility */
   cursor: pointer;
   transition: all 0.3s ease;
-  background: linear-gradient(135deg, #8f7ceb, #b0a8f5); /* Gradient for modern look */
+  background: linear-gradient(
+    135deg,
+    #8f7ceb,
+    #b0a8f5
+  ); /* Gradient for modern look */
   color: #fff;
   box-shadow: 0px 4px 6px rgba(143, 124, 235, 0.5);
 }
 
 .back-btn:hover {
-  background: linear-gradient(135deg, #7d68d5, #a899e6); /* Slightly darker hover gradient */
+  background: linear-gradient(
+    135deg,
+    #7d68d5,
+    #a899e6
+  ); /* Slightly darker hover gradient */
   transform: scale(1.05); /* Add slight zoom on hover */
   box-shadow: 0px 6px 8px rgba(125, 104, 213, 0.4);
 }
@@ -237,7 +241,11 @@
 }
 
 .save-btx:hover {
-  background: linear-gradient(135deg, #e8e8e8, #e2e2e2); /* Slightly darker hover gradient */
+  background: linear-gradient(
+    135deg,
+    #e8e8e8,
+    #e2e2e2
+  ); /* Slightly darker hover gradient */
   transform: scale(1.05); /* Add slight zoom on hover */
   box-shadow: 0px 6px 8px rgba(200, 200, 200, 0.4);
 }
@@ -286,4 +294,19 @@
   transform: translateY(-50%);
   font-size: 16px;
   margin-right: 5px;
+}
+
+.mui-input {
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  font-size: 16px;
+  background: #f9f9f9;
+  transition: all 0.3s ease;
+}
+
+.mui-input:focus {
+  border-color: #4a90e2;
+  background: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  outline: none;
 }

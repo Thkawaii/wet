@@ -10,12 +10,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.5.2",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@fortawesome/fontawesome-free": "^6.7.1",
+    "@mui/material": "^6.3.0",
     "@react-google-maps/api": "^2.20.3",
     "@react-spring/web": "^9.7.5",
     "@types/socket.io-client": "^3.0.0",
+    "antd": "^5.22.7",
     "antd-img-crop": "^4.23.0",
     "axios": "^1.7.9",
+    "dayjs": "^1.11.13",
     "leaflet": "^1.9.4",
     "lodash": "^4.17.21",
     "react": "^18.3.1",
